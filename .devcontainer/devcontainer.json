@@ -1,0 +1,28 @@
+{
+  "name": "Java 25 (Debian 13)",
+  "image": "ghcr.io/agungdh/devcontainer-java25:latest",
+  "remoteUser": "agungdh",
+  "overrideCommand": false,
+  "runArgs": ["--network=host"],
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=${localWorkspaceFolder}/.devcontainer/.gitignore_global,target=/home/agungdh/.gitignore_global,type=bind,readonly"
+  ],
+  "containerEnv": {
+    "SHELL": "/bin/bash"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "ms-azuretools.vscode-docker",
+        "ms-azuretools.vscode-containers",
+        "editorconfig.editorconfig",
+        "eamodio.gitlens"
+      ]
+    }
+  },
+  "postCreateCommand": "git config --global --add safe.directory /workspaces/${localWorkspaceFolderBasename} && git config --global core.excludesFile /home/agungdh/.gitignore_global && mkdir -p /home/agungdh/.commandcode && cp /workspaces/${localWorkspaceFolderBasename}/.devcontainer/commandcode-settings.json /home/agungdh/.commandcode/settings.json"
+}
