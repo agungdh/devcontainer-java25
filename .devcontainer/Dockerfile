@@ -19,6 +19,7 @@ RUN apt-get update \
         gnupg \
         sudo \
         make \
+        bash-completion \
         jq \
         unzip \
         zip \
@@ -33,6 +34,7 @@ RUN apt-get update \
         ripgrep \
         file \
         locales \
+        python3 \
         sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -139,6 +141,17 @@ RUN PROFILE_PATH="/home/${USERNAME}/.local/bin:/home/${USERNAME}/.opencode/bin:/
         | tee /etc/profile.d/nvm.sh > /dev/null \
     && echo "export SDKMAN_DIR=\"${SDKMAN_DIR}\"; [ -s \"\$SDKMAN_DIR/bin/sdkman-init.sh\" ] && . \"\$SDKMAN_DIR/bin/sdkman-init.sh\"" \
         | tee /etc/profile.d/sdkman.sh > /dev/null
+
+# ---------------------------------------------------------------------------
+# Shell interaktif root otomatis pindah ke user biasa
+# (mis. `docker exec -it <container> bash` tidak lagi berakhir sebagai root).
+# Hanya berlaku untuk shell interaktif (tty); `bash -c ...` tetap root.
+# ---------------------------------------------------------------------------
+RUN printf '%s\n' \
+        'if [ "$(id -u)" -eq 0 ] && [ -t 0 ]; then' \
+        '    exec su '"${USERNAME}" \
+        'fi' \
+        >> /root/.bashrc
 
 WORKDIR /workspaces
 

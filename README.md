@@ -17,6 +17,7 @@ Daripada mengulang setup di setiap mesin, lingkungannya dipindah ke dalam contai
 | Komponen | Keterangan |
 | --- | --- |
 | Base | `debian:13` (trixie) |
+| Tools | `bash-completion`, `python3`, plus `jq`, `ripgrep`, `tree`, `htop` |
 | JDK | Liberica JDK 25 (LTS) via SDKMAN, versi `25.0.5.0+11-librca` |
 | Java env | `JAVA_HOME=~/.sdkman/candidates/java/current`, `sdk` aktif di shell login |
 | SQLite | `sqlite3` CLI |
@@ -44,6 +45,12 @@ Langkahnya:
 3. Image `ghcr.io/agungdh/devcontainer-java25:latest` di-pull otomatis, container dibuat dengan user `agungdh`.
 
 Tidak perlu build image secara lokal. Image dibangun oleh GitHub Actions setiap ada perubahan di `.devcontainer/` dan di-push ke GHCR (`latest` untuk branch `main`, plus tag per commit SHA).
+
+## Shell
+
+Shell interaktif yang dijalankan sebagai `root` otomatis berpindah ke `agungdh`, jadi `docker exec -it <container> bash` tidak lagi berakhir sebagai root. Perpindahan ini hanya terjadi pada shell interaktif (ada tty); `bash -c ...` tetap berjalan sebagai root.
+
+Kalau benar-benar butuh shell interaktif root, jalankan `sudo bash --norc`, atau `sudo <perintah>` untuk satu perintah saja.
 
 ## Networking
 
